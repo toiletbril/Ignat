@@ -14,8 +14,6 @@ newtype MarkovState = State
   { getChain :: Chain
   }
 
-data App = App { markovState :: MarkovState, env :: [Text] }
-
 readEnv :: IO [Text]
 readEnv = do
   file <- T.readFile ".env"
