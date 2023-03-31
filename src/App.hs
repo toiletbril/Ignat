@@ -1,14 +1,8 @@
 module App where
 
-import           Control.Monad.State    hiding (withState)
-import           Data.Map               as M
 import           Data.Text              as T
 import           Data.Text.IO           as T
 import           Discord.Internal.Types (UserId)
-
-type Chain = Map Text [Text]
-
-type Markov a = StateT Chain IO a
 
 readEnv :: IO [Text]
 readEnv = do

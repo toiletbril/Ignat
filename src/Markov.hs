@@ -10,7 +10,6 @@ module Markov
   )
 where
 
-import           App
 import           Control.Monad.State hiding (withState)
 import           Data.List
 import           Data.Map            as M
@@ -22,6 +21,10 @@ import           Util                (botLog)
 
 -- TODO:  Store dictionary in a database instead of memory
 -- TODO:  Separate dictionaries for servers
+
+type Chain = Map Text [Text]
+
+type Markov a = StateT Chain IO a
 
 emptyChain :: Chain
 emptyChain = M.empty
