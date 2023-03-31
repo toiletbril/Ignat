@@ -1,13 +1,12 @@
 module Main where
 
-import qualified Data.Text as T
-import qualified Data.Text.IO as T
-import Discord
-import Discord.Types
-import Markov.Markov
-import MessageHandler (handleMessage)
-import UnliftIO (MVar, liftIO, newMVar)
-
+import           App
+import qualified Data.Text.IO   as T
+import           Discord
+import           Discord.Types
+import           Markov.Markov
+import           MessageHandler (handleMessage)
+import           UnliftIO       (MVar, liftIO, newMVar)
 
 -- TODO: Add debug flag
 main :: IO ()
@@ -36,9 +35,4 @@ eventHandler :: MVar MarkovState -> Event -> DiscordHandler ()
 eventHandler state event = do
   case event of
     MessageCreate m -> handleMessage m state
-    _ -> return ()
-
-readEnv :: IO [T.Text]
-readEnv = do
-  file <- readFile ".env"
-  return $ map T.pack $ lines file
+    _               -> return ()

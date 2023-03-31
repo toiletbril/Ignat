@@ -2,11 +2,11 @@
 
 module MessageHandler where
 
-import Discord (DiscordHandler)
-import Discord.Types (Message (messageContent))
-import Markov.Markov
-import UnliftIO
-import Util
+import           Discord       (DiscordHandler)
+import           Discord.Types (Message (messageContent))
+import           Markov.Markov
+import           UnliftIO
+import           Util
 
 -- TODO: Make this cooler
 handleMessage :: Message -> MVar MarkovState -> DiscordHandler ()
@@ -14,7 +14,7 @@ handleMessage m s
   | isValidMessage m =
       case commandType contents of
         "haskell" -> reply m "This is the message"
-        _ -> return ()
+        _         -> return ()
   | isMarkovResponse m = do
       chain <- getChain <$> takeMVar s
       (generated, chain') <- liftIO . runMarkov $ generateMarkov chain contents

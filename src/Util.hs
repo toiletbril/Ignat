@@ -1,18 +1,12 @@
 module Util where
 
-import Control.Monad
-import Data.Text as T
-import Discord
-import Discord.Requests as R
-import Discord.Types
-import UnliftIO (MonadIO, liftIO)
-
--- TODO: Read bot prefix from .env
-botPrefix :: Char
-botPrefix = '%'
-
-botId :: UserId
-botId = 1042440644028813352
+import           App
+import           Control.Monad
+import           Data.Text        as T
+import           Discord
+import           Discord.Requests as R
+import           Discord.Types
+import           UnliftIO         (MonadIO, liftIO)
 
 botLog :: MonadIO m => String -> m ()
 botLog s = liftIO $ putStrLn $ "> " <> s

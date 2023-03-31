@@ -13,28 +13,21 @@ module Markov.Markov
   )
 where
 
-import Control.Monad.State hiding (withState)
-import Data.List
-import Data.Map as M
-import Data.Text (Text)
-import qualified Data.Text as T
-import System.Random
-import Util (botLog)
-import Prelude hiding (lookup)
+import           App
+import           Control.Monad.State hiding (withState)
+import           Data.List
+import           Data.Map            as M
+import           Data.Text           (Text)
+import qualified Data.Text           as T
+import           Prelude             hiding (lookup)
+import           System.Random
+import           Util                (botLog)
 
 {-
   TODO:
     - Store dictionary in a database instead of memory
     - Separate dictionaries for servers
 -}
-
-type Chain = Map Text [Text]
-
-type Markov a = StateT Chain IO a
-
-newtype MarkovState = State
-  { getChain :: Chain
-  }
 
 withState :: Chain -> MarkovState
 withState = State
@@ -52,7 +45,7 @@ addWord k v = do
   let ws = findWithDefault [] k chain
   case elemIndex v ws of
     Just _ -> return ()
-    _ -> put $ M.insert k (v : ws) chain
+    _      -> put $ M.insert k (v : ws) chain
 
 train :: [Text] -> Markov ()
 train ws = do
