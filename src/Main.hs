@@ -4,7 +4,7 @@ import           App
 import qualified Data.Text.IO   as T
 import           Discord
 import           Discord.Types
-import           Markov.Markov
+import           Markov
 import           MessageHandler (handleMessage)
 import           UnliftIO       (MVar, liftIO, newMVar)
 

@@ -8,11 +8,12 @@ executable RunIgnat
     ghc-options:        -O2 -Wall -fno-warn-type-defaults -fno-warn-unused-record-wildcards -threaded
     hs-source-dirs:     src
 
-    main-is:            Bot.hs
+    main-is:            Main.hs
 
     other-modules:      Util
                       , MessageHandler
-                      , Markov.Markov
+                      , Markov
+                      , App
 
     build-depends:      base
                       , text

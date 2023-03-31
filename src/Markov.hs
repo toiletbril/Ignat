@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Markov.Markov
+module Markov
   ( Markov,
     MarkovState,
     Chain,
@@ -23,11 +23,8 @@ import           Prelude             hiding (lookup)
 import           System.Random
 import           Util                (botLog)
 
-{-
-  TODO:
-    - Store dictionary in a database instead of memory
-    - Separate dictionaries for servers
--}
+-- TODO:  Store dictionary in a database instead of memory
+-- TODO:  Separate dictionaries for servers
 
 withState :: Chain -> MarkovState
 withState = State
@@ -81,7 +78,7 @@ markov text = do
   train $ T.words text
   chain <- get
   botLog $
-    "(Markov) Updated with "
+    "Markov chain updated with "
       <> show (length chain)
       <> " keys in dictionary."
   let inputs = T.words text

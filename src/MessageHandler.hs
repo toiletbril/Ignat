@@ -4,7 +4,7 @@ module MessageHandler where
 
 import           Discord       (DiscordHandler)
 import           Discord.Types (Message (messageContent))
-import           Markov.Markov
+import           Markov
 import           UnliftIO
 import           Util
 
