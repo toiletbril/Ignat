@@ -10,7 +10,7 @@ module Markov
   )
 where
 
-import           Control.Monad.State hiding (withState)
+import           Control.Monad.State
 import           Data.List
 import           Data.Map            as M
 import           Data.Text           (Text)
