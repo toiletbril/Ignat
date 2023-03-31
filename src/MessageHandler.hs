@@ -18,11 +18,11 @@ handleMessage m s
   | isMarkovResponse m = do
       chain <- getChain <$> takeMVar s
       (generated, chain') <- liftIO . runMarkov $ generateMarkov chain contents
-      reply m $ contents <> " " <> generated
+      reply m $ withoutFirst contents <> " " <> generated
       putMVar s $ withState chain'
   | otherwise = do
       chain <- getChain <$> takeMVar s
-      ((), chain') <- liftIO . runMarkov $ markovFromChain chain
+      (_, chain') <- liftIO . runMarkov $ generateMarkov chain contents
       putMVar s $ withState chain'
   where
     contents = messageContent m

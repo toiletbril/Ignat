@@ -17,7 +17,7 @@ import Control.Monad.State hiding (withState)
 import Data.List
 import Data.Map as M
 import Data.Text (Text)
-import Data.Text qualified as T
+import qualified Data.Text as T
 import System.Random
 import Util (botLog)
 import Prelude hiding (lookup)

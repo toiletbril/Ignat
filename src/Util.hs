@@ -14,13 +14,16 @@ botId :: UserId
 botId = 1042440644028813352
 
 botLog :: MonadIO m => String -> m ()
-botLog s = liftIO $ putStrLn s
+botLog s = liftIO $ putStrLn $ "> " <> s
 
 commandType :: Text -> Text
 commandType = T.tail . Prelude.head . T.words
 
 startsWith :: Message -> Char -> Bool
 startsWith m = (==) . T.head $ messageContent m
+
+withoutFirst :: Text -> Text
+withoutFirst s = T.unwords . Prelude.tail $ T.words s
 
 isUser :: Message -> Bool
 isUser = not . userIsBot . messageAuthor
