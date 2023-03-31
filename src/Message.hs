@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module MessageHandler where
+module Message where
 
 import           Discord       (DiscordHandler)
 import           Discord.Types (Message (messageContent))

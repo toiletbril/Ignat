@@ -1,12 +1,12 @@
 module Main where
 
 import           App
-import qualified Data.Text.IO   as T
+import qualified Data.Text.IO  as T
 import           Discord
 import           Discord.Types
 import           Markov
-import           MessageHandler (handleMessage)
-import           UnliftIO       (MVar, liftIO, newMVar)
+import           Message       (handleMessage)
+import           UnliftIO      (MVar, liftIO, newMVar)
 
 -- TODO: Add debug flag
 main :: IO ()
