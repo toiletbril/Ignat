@@ -1,0 +1,18 @@
+cabal-version:  2.0
+name:           john
+version:        0.0.1
+build-type:     Simple
+
+executable john
+    main-is:            Bot.hs
+    default-language:   Haskell2010
+    ghc-options:        -O2 -Wall -fno-warn-type-defaults -fno-warn-unused-record-wildcards -threaded
+    hs-source-dirs:     src
+    other-modules:      Util, MessageHandler, Markov.Markov
+    build-depends:      base
+                      , text
+                      , discord-haskell
+                      , unliftio
+                      , containers
+                      , mtl
+                      , random
