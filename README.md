@@ -1,6 +1,6 @@
 # Ignat
 
-Ignat is a bot written in Haskell using [discord-haskell](https://hackage.haskell.org/package/discord-haskell) package.
+Ignat is a bot written in Haskell using [discord-haskell](https://hackage.haskell.org/package/discord-haskell) package. I have no idea what I am doing.
 
 ## What does it do
 
