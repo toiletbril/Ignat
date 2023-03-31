@@ -7,6 +7,7 @@ import Discord.Requests as R
 import Discord.Types
 import UnliftIO (MonadIO, liftIO)
 
+-- TODO: Read bot prefix from .env
 botPrefix :: Char
 botPrefix = '%'
 
