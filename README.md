@@ -8,7 +8,7 @@ Ignat is a bot written in Haskell using [discord-haskell](https://hackage.haskel
     - `haskell`
 
 - Markov Chains
-    - Are not pesistent yet. Meaning each restart will reset It's dictionary.
+    - Are not persistent yet. Meaning each restart will reset It's dictionary.
     - Try to @tag the bot and tell it something.
 
 ## Quickstart
