@@ -2,11 +2,8 @@
 
 module Markov
   ( Markov,
-    MarkovState,
     Chain,
-    getChain,
-    withState,
-    newState,
+    emptyChain,
     markovFromChain,
     generateMarkov,
     runMarkov,
@@ -25,12 +22,6 @@ import           Util                (botLog)
 
 -- TODO:  Store dictionary in a database instead of memory
 -- TODO:  Separate dictionaries for servers
-
-withState :: Chain -> MarkovState
-withState = State
-
-newState :: MarkovState
-newState = State emptyChain
 
 emptyChain :: Chain
 emptyChain = M.empty

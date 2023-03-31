@@ -9,20 +9,20 @@ import           UnliftIO
 import           Util
 
 -- TODO: Make this cooler
-handleMessage :: Message -> MVar MarkovState -> DiscordHandler ()
+handleMessage :: Message -> MVar Chain -> DiscordHandler ()
 handleMessage m s
   | isValidMessage m =
       case commandType contents of
         "haskell" -> reply m "This is the message"
         _         -> return ()
   | isMarkovResponse m = do
-      chain <- getChain <$> takeMVar s
+      chain <- takeMVar s
       (generated, chain') <- liftIO . runMarkov $ generateMarkov chain contents
       reply m $ withoutFirst contents <> " " <> generated
-      putMVar s $ withState chain'
+      putMVar s chain'
   | otherwise = do
-      chain <- getChain <$> takeMVar s
+      chain <- takeMVar s
       (_, chain') <- liftIO . runMarkov $ generateMarkov chain contents
-      putMVar s $ withState chain'
+      putMVar s chain'
   where
     contents = messageContent m

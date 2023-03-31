@@ -10,10 +10,6 @@ type Chain = Map Text [Text]
 
 type Markov a = StateT Chain IO a
 
-newtype MarkovState = State
-  { getChain :: Chain
-  }
-
 readEnv :: IO [Text]
 readEnv = do
   file <- T.readFile ".env"

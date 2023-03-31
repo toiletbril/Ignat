@@ -12,7 +12,7 @@ import           UnliftIO      (MVar, liftIO, newMVar)
 main :: IO ()
 main = do
   env <- readEnv
-  state <- newMVar newState -- TODO: Read state from DB
+  state <- newMVar emptyChain -- TODO: Read state from DB
   putStrLn "IgnatBot :: IO ()"
   putStrLn "IgnatBot = do"
   putStrLn "  Connecting to discord..."
@@ -31,7 +31,7 @@ main = do
   putStrLn "*** Encountered an unrecoverable error:"
   T.putStrLn err
 
-eventHandler :: MVar MarkovState -> Event -> DiscordHandler ()
+eventHandler :: MVar Chain -> Event -> DiscordHandler ()
 eventHandler state event = do
   case event of
     MessageCreate m -> handleMessage m state
