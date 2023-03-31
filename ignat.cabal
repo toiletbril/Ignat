@@ -1,5 +1,5 @@
 cabal-version:  2.0
-name:           john
+name:           ignat
 version:        0.0.1
 build-type:     Simple
 
