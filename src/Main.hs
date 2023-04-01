@@ -13,6 +13,7 @@ main :: IO ()
 main = do
   env <- readEnv
   state <- newMVar emptyChain -- TODO: Read state from DB
+
   putStrLn "IgnatBot :: IO ()"
   putStrLn "IgnatBot = do"
   putStrLn "  Connecting to discord..."

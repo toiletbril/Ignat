@@ -29,7 +29,7 @@ type Markov a = StateT Chain IO a
 emptyChain :: Chain
 emptyChain = M.empty
 
--- TODO: Add probability?
+-- TODO: Add probability
 addWord :: Text -> Text -> Markov ()
 addWord k v = do
   chain <- get
@@ -53,13 +53,13 @@ generate n word = do
     [] ->
       return T.empty
     _ -> do
-      nxt <- liftIO $ randomRIO (0, length choices - 1)
-      let nextWord = choices !! nxt
+      i <- liftIO $ randomRIO (0, length choices - 1)
+      let w = choices !! i
       if n == 1
-        then return nextWord
+        then return w
         else do
-          rest <- generate (n - 1) nextWord
-          return $ nextWord <> " " <> rest
+          rest <- generate (n - 1) w
+          return $ w <> " " <> rest
 
 markovFromChain :: Chain -> Markov ()
 markovFromChain = put
@@ -70,15 +70,13 @@ maxNum = 88
 markov :: Text -> Markov Text
 markov text = do
   train $ T.words text
-  chain <- get
+  len <- gets length
   botLog $
     "Markov chain updated with "
-      <> show (length chain)
+      <> show len
       <> " keys in dictionary."
-  let inputs = T.words text
-  let lastWord = last inputs
   n <- liftIO $ randomRIO (10, maxNum)
-  generate n lastWord
+  generate n $ last . T.words $ text
 
 generateMarkov :: Chain -> Text -> Markov Text
 generateMarkov c t = markovFromChain c *> markov t

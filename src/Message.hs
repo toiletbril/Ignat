@@ -13,7 +13,7 @@ handleMessage :: Message -> MVar Chain -> DiscordHandler ()
 handleMessage m s
   | isValidMessage m =
       case commandType contents of
-        "haskell" -> reply m "This is the message"
+        "haskell" -> reply m "Hello World"
         _         -> return ()
   | isMarkovResponse m = do
       chain <- takeMVar s
