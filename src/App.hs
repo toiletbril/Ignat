@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module App where
 
 import           Data.Text              as T
@@ -11,8 +13,8 @@ readEnv = do
   return $ T.lines file
 
 -- TODO: Read these from .env
-botPrefix :: Char
-botPrefix = '%'
+botPrefix :: Text
+botPrefix = "%"
 
 botId :: UserId
 botId = 1042440644028813352

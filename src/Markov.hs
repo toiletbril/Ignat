@@ -4,7 +4,6 @@ module Markov
   ( Markov,
     Chain,
     emptyChain,
-    markovFromChain,
     generateMarkov,
     runMarkov,
   )
@@ -73,7 +72,7 @@ markov text = do
   len <- gets length
   botLog $
     "Markov chain updated with "
-      <> show len
+      <> T.pack (show len)
       <> " keys in dictionary."
   n <- liftIO $ randomRIO (10, maxNum)
   generate n $ last . T.words $ text

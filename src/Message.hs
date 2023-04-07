@@ -2,8 +2,10 @@
 
 module Message where
 
-import           Discord       (DiscordHandler)
-import           Discord.Types (Message (messageContent))
+import           Data.Text        (Text)
+import           Discord          (DiscordHandler, restCall)
+import           Discord.Requests as R
+import           Discord.Types
 import           Markov
 import           UnliftIO
 import           Util
@@ -26,3 +28,14 @@ handleMessage m s
       putMVar s chain'
   where
     contents = messageContent m
+
+reply :: Message -> Text -> DiscordHandler ()
+reply m s = do
+  botLog $
+    "Replying on a message:\n"
+      <> "[" <> packShow (messageTimestamp m) <> "] "
+      <> packShow (userName $ messageAuthor m) <> ": "
+      <> messageContent m
+      <> "\nwith:\n" <> s
+  _ <- restCall $ R.CreateMessage (messageChannelId m) s
+  return ()

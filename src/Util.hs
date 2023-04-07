@@ -1,21 +1,24 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Util where
 
 import           App
-import           Control.Monad
-import           Data.Text        as T
-import           Discord
-import           Discord.Requests as R
+import           Data.Text     as T
+import           Data.Text.IO  as T (putStrLn)
 import           Discord.Types
-import           UnliftIO         (MonadIO, liftIO)
+import           UnliftIO      (MonadIO, liftIO)
 
-botLog :: MonadIO m => String -> m ()
-botLog s = liftIO $ putStrLn $ "> " <> s
+botLog :: MonadIO m => Text -> m ()
+botLog s = liftIO $ T.putStrLn $ "> " <> s
+
+packShow :: Show a => a -> Text
+packShow = T.pack . show
 
 commandType :: Text -> Text
 commandType = T.tail . Prelude.head . T.words
 
-startsWith :: Message -> Char -> Bool
-startsWith m = (==) . T.head $ messageContent m
+startsWith :: Message -> Text -> Bool
+startsWith = isPrefixOf . messageContent
 
 withoutFirst :: Text -> Text
 withoutFirst s = T.unwords . Prelude.tail $ T.words s
@@ -28,17 +31,3 @@ isMarkovResponse m = Prelude.any (\x -> userId x == botId) (messageMentions m) &
 
 isValidMessage :: Message -> Bool
 isValidMessage m = m `startsWith` botPrefix && isUser m
-
-reply :: Message -> Text -> DiscordHandler ()
-reply m s = do
-  botLog $
-    "Replying on a message:\n"
-      <> "["
-      <> show (messageTimestamp m)
-      <> "] "
-      <> show (userName $ messageAuthor m)
-      <> ": "
-      <> unpack (messageContent m)
-      <> "\nwith:\n"
-      <> unpack s
-  void . restCall $ R.CreateMessage (messageChannelId m) s
