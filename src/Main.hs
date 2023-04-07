@@ -12,7 +12,10 @@ import           UnliftIO      (MVar, liftIO, newMVar)
 main :: IO ()
 main = do
   env <- readEnv
-  state <- newMVar emptyChain -- TODO: Read state from DB
+
+  shakespeare <- shakespeareChain
+  -- TODO: DB
+  state <- newMVar shakespeare
 
   putStrLn "IgnatBot :: IO ()"
   putStrLn "IgnatBot = do"
@@ -26,7 +29,7 @@ main = do
           discordOnStart = liftIO $ putStrLn "  Successfully connected. Logs will appear below.",
           discordOnEvent = eventHandler state,
           discordOnLog = T.putStrLn,
-          discordOnEnd = return () -- TODO: Write state to DB
+          discordOnEnd = return ()
         }
 
   putStrLn "*** Encountered an unrecoverable error:"

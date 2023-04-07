@@ -2,6 +2,7 @@
 
 module Message where
 
+import           Control.Monad    (when)
 import           Data.Text        (Text)
 import           Discord          (DiscordHandler, restCall)
 import           Discord.Requests as R
@@ -22,7 +23,7 @@ handleMessage m s
       (generated, chain') <- liftIO . runMarkov $ generateMarkov chain contents
       reply m $ withoutFirst contents <> " " <> generated
       putMVar s chain'
-  | otherwise = do
+  | otherwise = when (isUser m) $ do
       chain <- takeMVar s
       (_, chain') <- liftIO . runMarkov $ generateMarkov chain contents
       putMVar s chain'
