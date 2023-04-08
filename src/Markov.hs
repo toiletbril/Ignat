@@ -19,7 +19,7 @@ import qualified Data.Text.IO        as T
 import           Prelude             hiding (lookup)
 import           System.IO           (IOMode (ReadMode), openFile)
 import           System.Random
-import           Util                (botLog, (<->))
+import           Util                (botLog, (<->), packShow)
 
 
 -- TODO: Store dictionary in a database instead of memory
@@ -85,7 +85,7 @@ markov text = do
   len <- gets length
   botLog $
     "Markov chain updated with"
-      <-> T.pack (show len)
+      <-> packShow len
       <-> "keys in dictionary."
   n <- liftIO $ randomRIO (10, maxNum)
   generate n $ last . T.words $ text
