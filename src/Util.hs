@@ -2,29 +2,33 @@
 
 module Util where
 
-import           App
-import           Control.Monad
 import           Data.Maybe    (fromMaybe)
+import           Data.String   (IsString)
 import           Data.Text     as T
 import           Data.Text.IO  as T (putStrLn)
 import           Discord.Types
 import           UnliftIO      (MonadIO, liftIO)
 
 botLog :: MonadIO m => Text -> m ()
-botLog s = liftIO $ T.putStrLn $ "> " <> s
+botLog s = liftIO $ T.putStrLn $ ">" <-> s
 
 packShow :: Show a => a -> Text
 packShow = T.pack . show
 
-commandType :: Text -> Text
-commandType x = fromMaybe "" $ t <=< headMay $ T.words x
-  where
-    t "" = Nothing
-    t a  = Just (T.tail a)
-
 headMay :: [a] -> Maybe a
 headMay [] = Nothing
 headMay a  = Just (Prelude.head a)
+
+tTailMay :: Text -> Maybe Text
+tTailMay "" = Nothing
+tTailMay a  = Just (T.tail a)
+
+tHeadMay :: Text -> Maybe Text
+tHeadMay "" = Nothing
+tHeadMay a  = Just (singleton $ T.head a)
+
+(<->) :: (IsString a, Semigroup a) => a -> a -> a
+(<->) = (<>) . flip (<>) " "
 
 startsWith :: Message -> Text -> Bool
 startsWith = isPrefixOf . messageContent
@@ -32,11 +36,10 @@ startsWith = isPrefixOf . messageContent
 withoutFirst :: Text -> Text
 withoutFirst s = T.unwords . Prelude.tail $ T.words s
 
+capFirst :: Text -> Text
+capFirst t = fromMaybe "" $ (toUpper <$> x) <> xs
+  where x = tHeadMay t
+        xs = tTailMay t
+
 isUser :: Message -> Bool
 isUser = not . userIsBot . messageAuthor
-
-isMarkovResponse :: Message -> Bool
-isMarkovResponse m = Prelude.any (\x -> userId x == botId) (messageMentions m) && isUser m
-
-isValidMessage :: Message -> Bool
-isValidMessage m = m `startsWith` botPrefix && isUser m
