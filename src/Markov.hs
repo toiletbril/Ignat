@@ -44,9 +44,9 @@ addWord :: Text -> Text -> Markov ()
 addWord k v = do
   chain <- get
   let ws = findWithDefault [] k chain
-  case elemIndex v ws of
-    Just _ -> return ()
-    _      -> put $ M.insert k (v : ws) chain
+  if v `elem` ws
+    then return ()
+    else put $ M.insert k (v : ws) chain
 
 train :: [Text] -> Markov ()
 train ws = do
