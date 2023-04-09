@@ -3,8 +3,8 @@
 module Markov
   ( Markov,
     Chain,
-    emptyChain,
     shakespeareChain,
+    emptyChain,
     generateMarkov,
     runMarkov,
   )
@@ -17,15 +17,15 @@ import           Data.Text           (Text)
 import qualified Data.Text           as T
 import qualified Data.Text.IO        as T
 import           Prelude             hiding (lookup)
-import           System.IO           (IOMode (ReadMode), openFile)
 import           System.Random
-import           Util                (botLog, (<->), packShow)
+import           Util                (botLog, packShow, (<->))
 
+import           System.IO           (IOMode (ReadMode), openFile)
 
 -- TODO: Store dictionary in a database instead of memory
 -- TODO: Separate dictionaries for servers
 
-type Chain = Map Text [Text]
+type Chain = Map Text (Int, Map Text Int)
 
 type Markov a = StateT Chain IO a
 
@@ -37,16 +37,22 @@ shakespeareChain :: IO Chain
 shakespeareChain = do
   f <- openFile "shakespeare.txt" ReadMode
   t <- T.hGetContents f
-  (_, b) <- runMarkov $ markov t
+  (_, b) <- runMarkov $ train $ T.words t
   return b
 
 addWord :: Text -> Text -> Markov ()
 addWord k v = do
   chain <- get
-  let ws = findWithDefault [] k chain
-  if v `elem` ws
-    then return ()
-    else put $ M.insert k (v : ws) chain
+  case chain !? k of
+    Just (l, ws) ->
+      case ws !? v of
+        Just i -> do
+          let i' = i + 1
+          put $ M.insert k (max i' l, M.insert v i' ws) chain
+        _ ->
+          put $ M.insert k (max l 1, M.insert v 1 ws) chain
+    _ ->
+      put $ M.insert k (1, M.singleton v 1) chain
 
 train :: [Text] -> Markov ()
 train ws = do
@@ -55,15 +61,26 @@ train ws = do
   where
     addWord' = uncurry addWord
 
+-- TODO: This causes the chain to repeat itself.
+-- Also unefficient, since it's o(n)
+prob :: Int -> Int -> Map Text Int -> Text
+prob req i ws
+  | i < length ws =
+    let (word, count) = M.elemAt i ws in
+      if count >= req
+        then word
+        else prob req (i + 1) ws
+  | otherwise = error "prob() unreachable"
+
 generate :: Int -> Text -> Markov Text
 generate n word = do
   chain <- get
   case chain !? word of
     Nothing ->
       return T.empty
-    Just ws -> do
-      req <- liftIO $ randomRIO (0, length ws - 1)
-      let w = ws !! req
+    Just (l, ws) -> do
+      req <- liftIO $ randomRIO (0, l)
+      let w = prob req 0 ws
       if n == 1
         then return $
           if T.last w == '.'
