@@ -27,7 +27,7 @@ handleMessage m s
       putMVar s chain'
   | otherwise = when (isUser m) $ do
       chain <- takeMVar s
-      (_, chain') <- liftIO . runMarkov $ generateMarkov chain contents
+      (_, chain') <- liftIO . runMarkov $ trainMarkov chain contents
       putMVar s chain'
   where
     contents = messageContent m
