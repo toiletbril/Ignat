@@ -18,7 +18,7 @@ Ignat is a bot written in Haskell using [discord-haskell](https://hackage.haskel
 - Change `botId` and `botPrefix` in [App.hs](./src/App.hs) to your desired values.
 
 - Then run it:
-``` console
+```console
 $ stack build
 $ stack run
 ```
