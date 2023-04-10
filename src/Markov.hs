@@ -67,8 +67,7 @@ train ws = do
   where
     addWord' = uncurry addWord
 
--- TODO: This causes the chain to repeat itself.
--- Also unefficient, since it's o(n)
+-- TODO: This causes the chain to repeat itself. O(n)
 prob :: Int -> Int -> Map Text Int -> Text
 prob req i ws
   | i < length ws =
